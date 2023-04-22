@@ -1,0 +1,4 @@
+email: example@example.com
+server: https://acme-v02.api.letsencrypt.org/directory
+project_id: example
+google_domain_name: example.com

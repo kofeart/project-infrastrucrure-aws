@@ -1,0 +1,52 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: "{{ .Values.server }}"
+    email: "{{ .Values.email }}"
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-dns01
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "{{ .Values.email }}"
+    privateKeySecretRef:
+      name: letsencrypt-prod-dns01
+    solvers:
+      - dns01:
+          cloudDNS:
+            project: "{{ .Values.project_id }}"
+            serviceAccountSecretRef:
+              name: letsencrypt-prod-dns01-sa
+              key: credentials.json
+        selector:
+          dnsZones:
+          - "{{ .Values.google_domain_name }}"
+          - "*.{{ .Values.google_domain_name }}"
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-prod
+  namespace : dev
+spec:
+  secretName: wildcard-prod
+  issuerRef:
+    name: letsencrypt-prod-dns01
+    kind: ClusterIssuer
+  commonName: "*.{{ .Values.google_domain_name }}"
+  dnsNames:
+  - "*.{{ .Values.google_domain_name }}"
