@@ -25,17 +25,15 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod-dns01
     solvers:
-      - dns01:
-          cloudDNS:
-            project: "{{ .Values.project_id }}"
-            serviceAccountSecretRef:
-              name: letsencrypt-prod-dns01-sa
-              key: credentials.json
-        selector:
-          dnsZones:
-          - "{{ .Values.google_domain_name }}"
-          - "*.{{ .Values.google_domain_name }}"
-
+    - selector:
+        dnsZones:
+          - "{{ .Values.domain_name }}"
+          - "*.{{ .Values.domain_name }}"
+      dns01:
+        route53:
+          region: us-east-1
+          hostedZoneID: DIKER8JEXAMPLE # optional, see policy above
+          role: arn:aws:iam::YYYYYYYYYYYY:role/dns-manager
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -47,6 +45,6 @@ spec:
   issuerRef:
     name: letsencrypt-prod-dns01
     kind: ClusterIssuer
-  commonName: "*.{{ .Values.google_domain_name }}"
+  commonName: "*.{{ .Values.domain_name }}"
   dnsNames:
-  - "*.{{ .Values.google_domain_name }}"
+  - "*.{{ .Values.domain_name }}"

@@ -1170,7 +1170,7 @@ Starting Agent 7.27, the recommended setup is to never set `datadog.dockerSocket
 
 ## 2.4.38
 
-* Move the kube-state-metrics subchart from google's helm registry to charts.helm.sh/stable.
+* Move the kube-state-metrics subchart from 's helm registry to charts.helm.sh/stable.
 
 ## 2.4.37
 
@@ -1284,7 +1284,7 @@ variables, instead of passing one by one.
 
 ## 2.4.14
 
-* Fix external metrics on GKE due to Google fix on recent versions (introduced in 2.4.1).
+* Fix external metrics on GKE due to  fix on recent versions (introduced in 2.4.1).
 
 ## 2.4.13
 
