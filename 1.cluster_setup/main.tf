@@ -26,14 +26,14 @@ module "eks" {
 
 
   # aws-auth configmap
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = false
 
   aws_auth_roles = [
     {
       rolearn  = aws_iam_role.eks_cluster.arn
       username = "role1"
       groups   = ["system:masters"]
-    },
+    }
   ]
 
 
