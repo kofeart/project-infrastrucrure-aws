@@ -9,7 +9,7 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 
 
-aws sts get-caller-identity  --no-cli-pager > /dev/null
+aws sts get-caller-identity   > /dev/null
 
 if [ $? == 0 ]; 
 then 
