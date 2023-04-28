@@ -10,10 +10,14 @@ module "external-dns-terraform-helm" {
 commonAnnotations: {
   "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
 }
-provider: aws
+clusterDomain: "${var.domain_name}
+
+aws:
+  region: "${var.region}
+  zoneType: public
+
 rbac:
   create: true
 
-# Below policy is need to keep DNS records clean
 EOF
 }

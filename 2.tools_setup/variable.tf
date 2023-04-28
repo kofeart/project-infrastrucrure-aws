@@ -13,7 +13,7 @@ variable "external-dns-config" {
   description = "Please define external-dns configurations"
   default = {
     deployment_name = "external-dns"
-    chart_version   = "6.11.3"
+    chart_version   = "6.18.0"
   }
 }
 variable "email" {}
