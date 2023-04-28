@@ -8,7 +8,7 @@ module "external-dns-terraform-helm" {
   repository           = "https://charts.bitnami.com/bitnami"
   values_yaml          = <<EOF
 commonAnnotations: {
-  "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+  cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 }
 clusterDomain: "${var.domain_name}"
 
