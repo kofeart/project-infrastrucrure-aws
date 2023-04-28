@@ -10,36 +10,36 @@ resource "aws_iam_policy" "external-dns" {
   name        = "external-dns"
   description = "My external-dns"
   policy = jsonencode(
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Action": [
-        "route53:ChangeResourceRecordSets"
-      ],
-      "Resource": [
-        "arn:aws:route53:::hostedzone/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "route53:ListHostedZones",
-        "route53:ListResourceRecordSets"
-      ],
-      "Resource": [
-        "*"
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "route53:ChangeResourceRecordSets"
+          ],
+          "Resource" : [
+            "arn:aws:route53:::hostedzone/*"
+          ]
+        },
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets"
+          ],
+          "Resource" : [
+            "*"
+          ]
+        }
       ]
     }
-  ]
-}
-)
+  )
 }
 
 
 resource "aws_iam_role" "external-dns-role" {
-  name = "external-dns-role"
+  name               = "external-dns-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
