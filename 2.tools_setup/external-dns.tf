@@ -10,10 +10,10 @@ module "external-dns-terraform-helm" {
 commonAnnotations: {
   "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
 }
-clusterDomain: "${var.domain_name}
+clusterDomain: "${var.domain_name}"
 
 aws:
-  region: "${var.region}
+  region: "${var.region}"
   zoneType: public
 
 rbac:
