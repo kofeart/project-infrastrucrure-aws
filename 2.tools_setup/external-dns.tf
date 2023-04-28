@@ -1,19 +1,37 @@
-resource "aws_iam_role" "external-dns-role" {
-  name = "external-dns-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = "AllowAssumeExternalDNSRole"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
+# gets entire account info
+data "aws_caller_identity" "current" {}
+
+# prints out account id
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
 }
+
+# locals {
+#   oidc_url = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+# }
+
+# resource "aws_iam_role" "external-dns-role" {
+#   name = "external-dns-role"
+#   assume_role_policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Principal": {
+#         "Federated": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url}"
+#       },
+#       "Action": "sts:AssumeRoleWithWebIdentity",
+#       "Condition": {
+#         "StringEquals": {
+#           "${local.oidc_url}:sub": "system:serviceaccount:external-dns:external-dns"
+#         }
+#       }
+#     }
+#   ]
+# }
+# EOF
+# }
 
 module "external-dns-terraform-k8s-namespace" {
   source = "../modules/terraform-k8s-namespace/"
