@@ -20,6 +20,7 @@ resource "aws_iam_role" "external-dns-role" {
 module "external-dns-terraform-helm" {
   source               = "../modules/terraform-helm/"
   deployment_name      = "external-dns"
+  deployment_namespace     = "external-dns"
   chart                = "external-dns"
   chart_version        = var.external-dns-config["chart_version"]
   repository           = "https://charts.bitnami.com/bitnami"
