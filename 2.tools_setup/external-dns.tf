@@ -6,7 +6,7 @@ resource "aws_iam_role" "external-dns-role" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid    = ""
+        Sid    = "AllowAssumeExternalDNSRole"
         Principal = {
           Service = "ec2.amazonaws.com"
         }
@@ -15,12 +15,15 @@ resource "aws_iam_role" "external-dns-role" {
   })
 }
 
-
+module "external-dns-terraform-k8s-namespace" {
+  source = "../modules/terraform-k8s-namespace/"
+  name   = "external-dns"
+}
 
 module "external-dns-terraform-helm" {
   source               = "../modules/terraform-helm/"
   deployment_name      = "external-dns"
-  deployment_namespace     = "external-dns"
+  deployment_namespace = module.external-dns-terraform-k8s-namespace.namespace
   chart                = "external-dns"
   chart_version        = var.external-dns-config["chart_version"]
   repository           = "https://charts.bitnami.com/bitnami"

@@ -1,7 +1,7 @@
 variable "region" {
   description = "Please provide a region"
-  type = string 
-  default = ""
+  type        = string
+  default     = ""
 }
 # This block is used to setup cert-manager
 variable "cert-manager-config" {
@@ -23,8 +23,8 @@ variable "external-dns-config" {
 }
 variable "email" {
   description = "Please provide an email"
-  type = string 
-  default = ""
+  type        = string
+  default     = ""
 }
 
 
@@ -40,8 +40,8 @@ variable "prometheus-config" {
 
 variable "domain_name" {
   description = "Please provide a domain"
-  type = string 
-  default = ""
+  type        = string
+  default     = ""
 }
 
 # This block is used to setup grafana
