@@ -1,16 +1,141 @@
-# aws-eks-cluster
-## After cluster creation please run below:
+### This repo is used to deploy namespaces
+
+---
+### Usage: 
+---
+
+1. Configure backend
 ```
-aws eks update-kubeconfig --name YOURCLUSTERNAME --region CLUSTER-DEPLOYMENT-REGION
+source ../scripts/setenv.sh
 ```
+
+#### 2. Initialize terraform 
 ```
-aws eks describe-cluster --name <cluster-name> --query cluster.status
+terraform  init 
 ```
-### If you faced issue with deleting like this 
+#### 3. Create 
 ```
-Security Group (sg-ID): DependencyViolation: resource sg-ID has a dependent object   status code: 400, request id: e208c396-e7e4-4497-8a05-11357abaaab4
+terraform apply    -var-file ../0.account_setup/configurations.tfvars 
 ```
-### Run this command and Remove the dependencies
+
+
+---
+## Verification Proccess.
+
+
+### Prometheus 
 ```
-aws ec2 describe-instances --filters Name=subnet-id,Values=subnet-01d189462707a8da6
+kubectl get pods -n prometheus 
+kubectl get ingress -n prometheus
+```
+
+### Grafana 
+```
+kubectl get pods -n grafana 
+kubectl get ingress -n grafana
+```
+
+### cert-manager 
+```
+kubectl get pods -n cert-manager 
+```
+
+### metrics-server
+```
+kubectl get pods -n kube-system
+```
+
+### External DNS 
+```
+kubectl get pods -n default 
+On Console >> Cloud DNS >> hosted-zone >> Check records
+```
+
+
+### Check logs of external-dns
+```
+kubectl get pods -n external-dns 
+kubectl logs POD_NAME -n external-dns
+```
+
+----
+### Troubleshooting cert-manager
+#### Sometimes when you visit the URL, it complains that certificate is not valid. Run below command and verify it is referring to the right clusterissuer
+```
+kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
+```
+---
+### When above command ran, you should check for certificate readiness, and validity. 
+
+
+----
+### Troubleshooting certificate issue (https://)
+#### Usually this issue happens when certificate is not ready. When you run below command it tells if certificate is Ready=True or Ready=False. Start by running below command. When you run 
+```
+kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
+```
+
+If the certificate request is not ready like below
+```
+certificaterequest.cert-manager.io/grafana-tls-zz84p   True                False    letsencrypt-prod  
+```
+#### then the error is related to ClusterIssuer. 
+#### Steps two fix it
+1. run 
+```
+kubectl get clusterissuer
+kubectl describe clusterissuer
+kubectl get certificaterequest -n NAMESPACE
+kubectl certificaterequest grafana-tls-zz84p  -n NAMESPACE
+```
+#### if the clusterissuer is not working, you can rebuild it. 
+```
+cd 2.tools-setup
+terraform state list 
+terraform taint module.lets-encrypt.helm_release.helm_deployment
+source ../scripts/setenv.sh
+terraform apply -var-file ../0.account_setup/configurations.tfvars
+```
+
+
+### Fix argocd issue
+#### argocd was failing due to certificate issue the following steps fixed it. We had to remove custom resource definition and redeploy with proper naming 
+```
+kubectl get CustomResourceDefinition | grep argo
+kubectl delete CustomResourceDefinition applications.argoproj.io 
+kubectl delete CustomResourceDefinition applicationsets.argoproj.io
+kubectl delete CustomResourceDefinition appprojects.argoproj.io
+cd 2.tools-setup
+source ../scripts/setenv.sh 
+terraform apply -var-file ../0.account_setup/configurations.tfvars -auto-approve
+ ```
+
+
+
+# Working with Argocd CLI
+#### Main documentation 
+```
+https://argo-cd.readthedocs.io/en/release-1.8/user-guide/commands/argocd_app_create/
+```
+## Working with clusters
+#### Login to argocd 
+```
+argocd login ARGOCD_URL
+```
+#### List existing clusters
+```
+argocd cluster list 
+```
+####  Add new cluster 
+```
+kubectl config get-contexts -o name
+argocd cluster add NAME
+```
+---
+## Working with apps
+#### List apps
+```
+argocd app -h
+argocd app list
+argocd app get APPNAME
 ```
