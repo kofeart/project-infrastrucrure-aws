@@ -66,7 +66,7 @@ variable "kube-state-metrics-config" {
 
 variable "vault-config" {
   type        = map(any)
-  description = "Please define prometheus configurations"
+  description = "Please define vault configurations"
   default = {
     deployment_name = "vault"
     chart_version   = "0.22.1"
@@ -105,7 +105,7 @@ variable "description" {
 # This block is used to setup ingress controller
 variable "ingress-controller-config" {
   type        = map(any)
-  description = "Please define prometheus configurations"
+  description = "Please define ingress configurations"
   default = {
     deployment_name          = "ingress-controller"
     chart_version            = "4.3.0"
@@ -116,7 +116,7 @@ variable "ingress-controller-config" {
 # This block is used to setup ingress controller
 variable "sftpgo-config" {
   type        = map(any)
-  description = "Please define prometheus configurations"
+  description = "Please define sftpgo configurations"
   default = {
     deployment_name = "sftpgo"
     chart_version   = "0.12.0"
@@ -127,7 +127,7 @@ variable "sftpgo-config" {
 # This block is used to setup ingress controller
 variable "argo-config" {
   type        = map(any)
-  description = "Please define prometheus configurations"
+  description = "Please define argo configurations"
   default = {
     deployment_name = "argo"
     chart_version   = "5.20.5"
@@ -138,7 +138,7 @@ variable "argo-config" {
 # This block is used to setup github action runner
 variable "ghrunner-config" {
   type        = map(any)
-  description = "Please define prometheus configurations"
+  description = "Please define ghrunner configurations"
   default = {
     deployment_name            = "ghrunner"
     chart_version              = "0.22.0"
