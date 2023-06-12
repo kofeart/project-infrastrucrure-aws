@@ -14,7 +14,11 @@ aws sts get-caller-identity   > /dev/null
 if [ $? == 0 ]; 
 then 
     echo ${green}"Please continue" ${reset}
-
+    # Setup Kubectl get ns 
+    curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl --silent
+    chmod +x kubectl
+    mv kubectl ~/.local/bin
+    bash
 else 
     echo ${red} """
         Please setup your account
