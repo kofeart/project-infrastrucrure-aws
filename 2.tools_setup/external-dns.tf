@@ -52,7 +52,7 @@ resource "aws_iam_role" "external-dns-role" {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
-          "${data.terraform_remote_state.remote.outputs.cluster_oidc_issuer_url}:sub": "system:serviceaccount:external-dns:external-dns"
+          "${data.terraform_remote_state.remote.outputs.oidc_provider}:sub": "system:serviceaccount:external-dns:external-dns"
         }
       }
     }
@@ -60,7 +60,6 @@ resource "aws_iam_role" "external-dns-role" {
 }
 EOF
 }
-
 
 
 resource "aws_iam_policy_attachment" "external-dns" {

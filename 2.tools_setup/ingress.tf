@@ -1,7 +1,6 @@
 resource "aws_iam_policy" "alb_ingress_controller_policy" {
   name        = "alb_ingress_controller_policy"
   description = "Policy for ALB ingress controller"
-  
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -41,8 +40,8 @@ resource "aws_iam_policy" "alb_ingress_controller_policy" {
         Resource = "*"
       },
       {
-        Effect = "Allow"
-        Action = "sts:AssumeRoleWithWebIdentity"
+        Effect   = "Allow"
+        Action   = "sts:AssumeRoleWithWebIdentity"
         Resource = "*"
         Condition = {
           StringEquals = {
@@ -58,21 +57,21 @@ resource "aws_iam_policy" "alb_ingress_controller_policy" {
 }
 
 resource "aws_iam_role" "alb_ingress_controller_role" {
-  name               = "alb_ingress_controller_role"
+  name = "alb_ingress_controller_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
+        Effect = "Allow"
         Principal = {
           Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${data.terraform_remote_state.remote.outputs.oidc_provider}"
         }
-        "Action": "sts:AssumeRoleWithWebIdentity",
-        "Condition": {
-        "StringEquals": {
-          "${data.terraform_remote_state.remote.outputs.cluster_oidc_issuer_url}:sub": "system:serviceaccount:ingress-controller:ingress-controller"
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Condition" : {
+          "StringEquals" : {
+            "${data.terraform_remote_state.remote.outputs.cluster_oidc_issuer_url}:sub" : "system:serviceaccount:ingress-controller:ingress-controller"
+          }
         }
-      }
       }
     ]
   })
@@ -97,7 +96,7 @@ module "ingress-terraform-helm" {
   chart                = "ingress-nginx"
   chart_version        = var.ingress-controller-config["chart_version"]
   repository           = "https://kubernetes.github.io/ingress-nginx"
-  values_yaml = <<EOF
+  values_yaml          = <<EOF
   type: "Ingress"
   ingress:
     metricsPort: "8080"
@@ -135,15 +134,15 @@ module "ingress-terraform-helm" {
 EOF
 }
 
-output cluster_oidc_issuer_url {
-  value = "module.eks.cluster_oidc_issuer_url"
-}
-output oidc_provider {
-  value = "module.eks.oidc_provider"
-}
-output oidc_provider_arn {
-  value = "module.eks.oidc_provider_arn"
-}
-output "oidc_provider_url" {
-  value = "module.eks-cluster.oidc_provider_url"
-}
+# output cluster_oidc_issuer_url {
+#   value = module.eks.cluster_oidc_issuer_url
+# }
+# output oidc_provider {
+#   value = module.eks.oidc_provider
+# }
+# output oidc_provider_arn {
+#   value = module.eks.oidc_provider_arn
+# }
+# output "oidc_provider_url" {
+#   value = module.eks.oidc_provider_url
+# }
