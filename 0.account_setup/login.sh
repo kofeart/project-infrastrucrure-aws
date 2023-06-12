@@ -14,6 +14,7 @@ aws sts get-caller-identity   > /dev/null
 if [ $? == 0 ]; 
 then 
     # Setup python 
+    echo "${green}Setting up Python ${reset}"
     python3  -m venv workspace 
     source workspace/bin/activate
     echo "${green}Setting up AWS CLI ${reset}"
