@@ -14,6 +14,10 @@ aws sts get-caller-identity   > /dev/null
 if [ $? == 0 ]; 
 then 
     echo ${green}"Please continue" ${reset}
+    # Setup python 
+    python3  -m venv workspace 
+    source workspace/bin/activate
+    pip install awscli 
     # Setup Kubectl get ns 
     curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl --silent
     chmod +x kubectl
@@ -45,3 +49,5 @@ then
 else 
     exit 1
 fi
+
+# Setup python aws cli
