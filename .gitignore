@@ -1,1 +1,2 @@
 2.tools_setup/backend.tf
+1.cluster_setup/.terraform.lock.hcl
