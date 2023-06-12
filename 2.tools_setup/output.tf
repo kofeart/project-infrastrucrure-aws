@@ -9,7 +9,3 @@ output oidc_provider {
 output oidc_provider_arn {
   value = data.terraform_remote_state.remote.outputs.oidc_provider_arn
 }
-
-output "oidc_provider_url" {
-  value = data.terraform_remote_state.remote.outputs.oidc_provider_url
-}
