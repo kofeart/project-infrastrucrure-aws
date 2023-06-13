@@ -10,7 +10,7 @@ module "datadog-terraform-helm" {
   deployment_path      = "charts/datadog"
   values_yaml          = <<EOF
 datadog:
-  clusterName: "${var.gke_config["cluster_name"]}"
+  clusterName: "${var.domain_name}"
   site: "${var.datadog-config["site"]}"
   apiKey: "${var.datadog-config["apiKey"]}"
   logs:
