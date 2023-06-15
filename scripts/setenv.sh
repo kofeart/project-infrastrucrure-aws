@@ -95,6 +95,15 @@ cat "$DIR/backend.tf"
 terraform init -reconfigure
 
 
+
+# Setup python 
+echo "${green}Setting up Python ${reset}"
+python3  -m venv workspace 
+source workspace/bin/activate
+echo "${green}Setting up AWS CLI ${reset}"
+pip install awscli -q
+
+
 echo """
      ${green}"You are good to go"${reset}
 """
