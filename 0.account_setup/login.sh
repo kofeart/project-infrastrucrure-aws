@@ -47,8 +47,9 @@ then
         Please create 0.account_setup/configurations.tfvars
         And add the necessary values from README.md
     """
-else 
     exit 1
+else 
+    echo ${green}"configurations.tfvars file is created" ${reset}
 fi
 
 # Setup python aws cli

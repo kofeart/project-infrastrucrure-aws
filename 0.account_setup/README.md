@@ -39,6 +39,6 @@ aws_account = "YOUR_AWS_ACCOUNT_NUMBER"
 ### Step4
 
 ```
-bash login.sh 
+source login.sh 
 ```
 ----
