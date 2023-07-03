@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -xe
 # Set current folder
 DIR=$(pwd)
 echo $DIR
