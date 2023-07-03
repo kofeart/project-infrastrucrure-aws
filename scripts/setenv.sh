@@ -93,6 +93,12 @@ cat "$DIR/backend.tf"
 
 
 terraform init -reconfigure
+if [ $? -eq 0 ];
+then 
+  tfenv install 1.1.1
+  tfenv use 1.1.1
+  terraform init -reconfigure
+fi
 
 
 
