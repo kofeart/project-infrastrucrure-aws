@@ -126,10 +126,10 @@ module "ingress-terraform-helm" {
           nginx.ingress.kubernetes.io/rewrite-target: "/"
       path: /
       hosts:
-        - "ingress.kudratillo.org"
+        - "ingress.${var.domain_name}"
       tls:
         - secretName: ingress
           hosts:
-            - "ingress.kudratillo.org"
+            - "ingress.${var.domain_name}"
 EOF
 }
